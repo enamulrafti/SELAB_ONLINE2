@@ -1,0 +1,66 @@
+<html>
+	<head>
+		<title>QUIZ</title>
+	</head>
+	<body>
+		<h1>ONLINE QUIZ</h1>
+        <p id="msgHolder"></p>
+        <table border="1">
+            <tr>
+                <th>Question</th>
+                <th>Answer</th>
+                <th>Your Answer</th>
+                <th>Output</th>
+            </tr>
+            <tr>
+                <td id="question">________________</td>
+                <td id="answer">____________</td>
+                <td id="y_answer">____________</td>
+                <td id="output">___________</td>
+            </tr>
+            
+        </table>
+
+		<button id="btnGetData">Start</button>
+		<script>
+			let btn = document.querySelector('#btnGetData');
+			btn.addEventListener('click', function (){
+
+				let msgHolder = document.querySelector('#msgHolder');
+                let question = document.querySelector('#question');
+                let answer = document.querySelector('#answer');
+                let y_answer = document.querySelector('#y_answer');
+                let output = document.querySelector('#output');
+				msgHolder.innerHTML = "Loading Question...";
+				let todo_id=0;
+				todo_id = prompt("Enter Question No:");
+				todo_id = todo_id-1;
+
+				fetch('http://localhost/quiz/backend.php')
+					.then(response => response.json())
+					.then(myObj => {
+						let res= prompt("Question:"+myObj.content[todo_id].question);
+						if(res == myObj.content[todo_id].answer){
+							// alert("Correct!");
+                            question.innerHTML=myObj.content[todo_id].question;
+                            answer.innerHTML=myObj.content[todo_id].answer;
+                            y_answer.innerHTML=res;
+                            output.innerHTML="Correct";
+                            msgHolder.innerHTML="Congrats!";
+							
+						}else{
+                            question.innerHTML=myObj.content[todo_id].question;
+                            answer.innerHTML=myObj.content[todo_id].answer;
+                            y_answer.innerHTML=res;
+                            output.innerHTML="Incorrect";
+                            msgHolder.innerHTML="Better Luck Next Time!";
+						}
+
+					});
+
+				
+			});
+
+		</script>		
+	</body>
+</html>
